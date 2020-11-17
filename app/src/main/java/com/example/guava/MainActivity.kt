@@ -1,5 +1,7 @@
 package com.example.guava
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Text
@@ -24,6 +26,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val requestParams = intent.data?.query?.split(",")
+        val code = requestParams?.get(0)?.split("=")?.get(1)
+        val scope = requestParams?.get(1)?.split("=")?.get(1)
+
         setContent {
             GuavaTheme {
                 LazyColumnFor(items = activityRepository.getAllActivities()){
@@ -81,5 +88,8 @@ class MainActivity : AppCompatActivity() {
             "8:32/mi",
             "25m 22s"
         )
+    }
+    companion object {
+        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
 }

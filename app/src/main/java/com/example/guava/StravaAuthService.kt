@@ -8,12 +8,12 @@ interface StravaAuthService {
 
 
     @POST("oath/token")
-    fun postAccessToken(
+    suspend fun postAccessToken(
         @Query("client_id") clientId: String,
         @Query("client_secret") clientSecret: String,
-        @Query("code") code: String,
-        @Query("grant_type") authorizationCode: String
-    ) : Response<Any>
+        @Query("grant_type") authorizationCode: String,
+        @Query("code") code: String
+    ) : Response<OAuthResponse>
 
     companion object {
         val BASE_URL = "https://www.strava.com/api/v3/oauth/token"

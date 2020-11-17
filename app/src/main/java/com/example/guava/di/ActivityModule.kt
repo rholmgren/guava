@@ -13,6 +13,7 @@ import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -22,7 +23,6 @@ abstract class ActivityModule {
     @Binds
     abstract fun bindActivityRepository(activityRepositoryImpl: FakeActivityRepository): ActivityRepository
 }
-
 
 @Module
 @InstallIn(ApplicationComponent::class)
@@ -51,10 +51,11 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideStravaAuthService(okHttpClient: OkHttpClient) : StravaAuthService {
+    fun provideStravaAuthService(okHttpClient: OkHttpClient): StravaAuthService {
         return Retrofit.Builder()
             .baseUrl("https://www.strava.com/api/v3/oauth/token/")
             .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(StravaAuthService::class.java)
 
