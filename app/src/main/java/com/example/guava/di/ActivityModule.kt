@@ -2,7 +2,7 @@ package com.example.guava.di
 
 import com.example.guava.ActivityRepository
 import com.example.guava.FakeActivityRepository
-import com.example.guava.StravaAuthService
+import com.example.guava.oauth.OAuthService
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import dagger.Binds
@@ -51,13 +51,13 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideStravaAuthService(okHttpClient: OkHttpClient): StravaAuthService {
+    fun provideStravaAuthService(okHttpClient: OkHttpClient): OAuthService {
         return Retrofit.Builder()
             .baseUrl("https://www.strava.com/api/v3/oauth/token/")
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-            .create(StravaAuthService::class.java)
+            .create(OAuthService::class.java)
 
     }
 

@@ -12,28 +12,54 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.ui.tooling.preview.Preview
+import com.example.guava.oauth.OAuthService
+import com.example.guava.oauth.OAuthConfig
 import com.example.guava.ui.ActivityDetails
 import com.example.guava.ui.GuavaTheme
 import com.example.guava.ui.ProfileRow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    @Inject lateinit var activityRepository: ActivityRepository
+    @Inject
+    lateinit var activityRepository: ActivityRepository
+
+    @Inject
+    lateinit var oAuthService: OAuthService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val requestParams = intent.data?.query?.split(",")
+        // extract parser to be able to write unit tests
+        val requestParams = intent.data?.query?.split("&")
         val code = requestParams?.get(0)?.split("=")?.get(1)
         val scope = requestParams?.get(1)?.split("=")?.get(1)
 
+
+        code?.let { it ->
+            lifecycleScope.launch {
+                val response = oAuthService.requestAccessToken(
+                    OAuthConfig.CLIENT_ID,
+                    OAuthConfig.CLIENT_SECRET,
+                    it,
+                    OAuthConfig.AUTHORIZATION_CODE
+                )
+                if (response.isSuccessful) {
+                    // store in shared preferences
+                } else {
+                    //show error and go back Authorization Activity
+                }
+            }
+        }
+
         setContent {
             GuavaTheme {
-                LazyColumnFor(items = activityRepository.getAllActivities()){
+                LazyColumnFor(items = activityRepository.getAllActivities()) {
                     ActivityItem(
                         it.owner,
                         it.activityTime,
@@ -89,6 +115,7 @@ class MainActivity : AppCompatActivity() {
             "25m 22s"
         )
     }
+
     companion object {
         fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
