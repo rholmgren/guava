@@ -1,5 +1,5 @@
 package com.example.guava
 
-interface ActivityRepository {
+interface WorkoutRepository {
     fun getAllActivities() : List<Activity>
 }

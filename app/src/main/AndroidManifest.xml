@@ -34,7 +34,7 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".WorkoutFeedActivity"/>
     </application>
 
 </manifest>

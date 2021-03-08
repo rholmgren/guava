@@ -1,7 +1,7 @@
 package com.example.guava.di
 
-import com.example.guava.ActivityRepository
-import com.example.guava.FakeActivityRepository
+import com.example.guava.WorkoutRepository
+import com.example.guava.FakeWorkoutRepository
 import com.example.guava.oauth.OAuthService
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @InstallIn(ActivityComponent::class)
 abstract class ActivityModule {
     @Binds
-    abstract fun bindActivityRepository(activityRepositoryImpl: FakeActivityRepository): ActivityRepository
+    abstract fun bindActivityRepository(activityRepositoryImpl: FakeWorkoutRepository): WorkoutRepository
 }
 
 @Module

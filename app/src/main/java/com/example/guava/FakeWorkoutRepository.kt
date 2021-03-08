@@ -2,7 +2,7 @@ package com.example.guava
 
 import javax.inject.Inject
 
-class FakeActivityRepository @Inject constructor(): ActivityRepository {
+class FakeWorkoutRepository @Inject constructor(): WorkoutRepository {
     override fun getAllActivities(): List<Activity> {
         return listOf(
             Activity(
