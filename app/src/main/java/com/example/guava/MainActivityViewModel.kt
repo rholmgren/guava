@@ -20,7 +20,7 @@ class MainActivityViewModel @Inject constructor(
         when (viewAction) {
             is ViewAction.InitializeOAuthNavigation -> {
                 viewModelScope.launch {
-                    tokenRepository.getToken(code = viewAction.code, athleteId = 1)
+                    tokenRepository.getToken(code = viewAction.code)
                     _viewEffects.value = ViewEffect.OpenWorkoutFeed
                 }
             }

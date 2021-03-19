@@ -5,6 +5,6 @@ import androidx.room.Query
 
 @Dao
 interface RefreshTokenDao {
-    @Query("SELECT * FROM refreshtokenentity WHERE athleteID = :athleteId")
-    suspend fun getToken(athleteId: Int): RefreshTokenEntity?
+    @Query("SELECT * FROM refreshtokenentity")
+    suspend fun getToken(): RefreshTokenEntity?
 }

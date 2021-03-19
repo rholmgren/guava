@@ -14,9 +14,9 @@ class TokenRepository @Inject constructor(
     private val refreshTokenDao: RefreshTokenDao
 
 ){
-    suspend fun getToken(code: String, athleteId: Int): String {
-        val accessToken = accessTokenDao.getToken(athleteId = athleteId)
-        val refreshToken = refreshTokenDao.getToken(athleteId = athleteId)
+    suspend fun getToken(code: String): String {
+        val accessToken = accessTokenDao.getToken()
+        val refreshToken = refreshTokenDao.getToken()
 
         return if(accessToken == null) {
             fetchAccessToken(code)
