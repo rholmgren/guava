@@ -1,4 +1,4 @@
-package com.example.guava.oauth
+package com.example.guava.oauth.refresh
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

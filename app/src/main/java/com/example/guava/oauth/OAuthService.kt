@@ -1,5 +1,7 @@
 package com.example.guava.oauth
 
+import com.example.guava.oauth.access.OAuthAccessTokenResponse
+import com.example.guava.oauth.refresh.OAuthRefreshTokenResponse
 import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -22,7 +24,7 @@ interface OAuthService {
     ) : Response<OAuthRefreshTokenResponse>
 
     companion object {
-        val BASE_URL = "https://www.strava.com/api/v3/oauth/token"
+        val BASE_URL = "https://www.strava.com/api/v3/"
     }
 }
 

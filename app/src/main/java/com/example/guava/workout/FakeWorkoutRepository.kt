@@ -1,4 +1,4 @@
-package com.example.guava
+package com.example.guava.workout
 
 import javax.inject.Inject
 

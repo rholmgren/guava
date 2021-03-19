@@ -1,4 +1,4 @@
-package com.example.guava
+package com.example.guava.workout
 
 import android.content.Context
 import android.content.Intent
@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import com.example.guava.R
 import com.example.guava.ui.ActivityDetails
 import com.example.guava.ui.GuavaTheme
 import com.example.guava.ui.ProfileRow

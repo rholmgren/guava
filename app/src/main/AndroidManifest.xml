@@ -30,11 +30,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:host="localhost"
+                    android:host="guava-mobile.web.app"
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity android:name=".WorkoutFeedActivity"/>
+        <activity android:name=".workout.WorkoutFeedActivity"/>
     </application>
 
 </manifest>
