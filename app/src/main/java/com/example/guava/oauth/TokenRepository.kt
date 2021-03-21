@@ -41,22 +41,57 @@ class TokenRepository @Inject constructor(
         )
 
         if (accessTokenResponse.isSuccessful) {
-            //save in database (both access token table and refresh token table)
-            return accessTokenResponse.body()!!.accessToken
+            val responseBody = accessTokenResponse.body()!!
+            val updatedAccessToken = AccessTokenEntity(
+                athleteID = responseBody.athlete.id,
+                code = responseBody.accessToken,
+                scope = true,
+                expiresInSecs = responseBody.expiresIn
+            )
+
+            val updatedRefreshToken = RefreshTokenEntity(
+                athleteID = responseBody.athlete.id,
+                code = responseBody.refreshToken,
+                scope = true
+            )
+
+            accessTokenDao.insertAccessToken(accessToken = updatedAccessToken)
+            refreshTokenDao.insertRefreshToken(refreshToken = updatedRefreshToken)
+
+            return responseBody.accessToken
         } else {
             throw InvalidAccessTokenException()
         }
     }
 
     private suspend fun fetchAccessTokenUsingRefreshToken(refreshTokenEntity: RefreshTokenEntity?): String {
+        val athleteId = accessTokenDao.getToken()!!.athleteID
+
         val refreshTokenResponse = oAuthService.refreshToken(
             clientId = OAuthConfig.CLIENT_ID,
             clientSecret = OAuthConfig.CLIENT_SECRET,
             grantType = OAuthConfig.GrantType.REFRESH_TOKEN.value,
             refreshToken = refreshTokenEntity!!.code
         )
+
         if (refreshTokenResponse.isSuccessful) {
-            //save in database (both access token table and refresh token table)
+            val responseBody = refreshTokenResponse.body()!!
+            val updatedAccessToken = AccessTokenEntity(
+                athleteID = athleteId,
+                code = responseBody.accessToken,
+                scope = true,
+                expiresInSecs = responseBody.expiresIn
+            )
+
+            val updatedRefreshToken = RefreshTokenEntity(
+                athleteID = athleteId,
+                code = responseBody.refreshToken,
+                scope = true
+            )
+
+            accessTokenDao.insertAccessToken(accessToken = updatedAccessToken)
+            refreshTokenDao.insertRefreshToken(refreshToken = updatedRefreshToken)
+
             return refreshTokenResponse.body()!!.accessToken
         } else {
             throw InvalidRefreshTokenException()

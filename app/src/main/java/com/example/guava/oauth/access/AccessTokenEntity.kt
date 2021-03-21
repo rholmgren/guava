@@ -14,5 +14,5 @@ data class AccessTokenEntity(
     @ColumnInfo(name = "scope")
     val scope: Boolean,
     @ColumnInfo(name = "expires_in")
-    val expiresInSecs: Int
+    val expiresInSecs: Long
 )

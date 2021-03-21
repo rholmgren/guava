@@ -22,7 +22,7 @@ data class OAuthAccessTokenResponse(
 @JsonClass(generateAdapter = true)
 data class AthleteSummaryInfo(
     @Json(name = "id")
-    val id: String,
+    val id: Int,
     @Json(name = "username")
     val username: String
 )

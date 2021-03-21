@@ -9,6 +9,8 @@ data class OAuthRefreshTokenResponse(
     val accessToken: String,
     @Json(name = "expires_at")
     val expiresAt: Long,
+    @Json(name = "expires_in")
+    val expiresIn: Long,
     @Json(name="refresh_token")
     val refreshToken: String,
 )
