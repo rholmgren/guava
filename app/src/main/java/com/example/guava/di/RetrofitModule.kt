@@ -1,6 +1,8 @@
 package com.example.guava.di
 
 import com.example.guava.oauth.OAuthService
+import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
+import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -34,6 +36,7 @@ class RetrofitModule {
         OkHttpClient.Builder()
             .readTimeout(100, TimeUnit.SECONDS)
             .connectTimeout(100, TimeUnit.SECONDS)
+            .addNetworkInterceptor(FlipperOkhttpInterceptor(NetworkFlipperPlugin()))
             .build()
 
 
