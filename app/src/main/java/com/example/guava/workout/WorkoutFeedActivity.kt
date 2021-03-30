@@ -3,6 +3,7 @@ package com.example.guava.workout
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Column
@@ -20,31 +21,37 @@ import com.example.guava.R
 import com.example.guava.ui.ActivityDetails
 import com.example.guava.ui.GuavaTheme
 import com.example.guava.ui.ProfileRow
+import com.example.guava.workout.WorkoutFeedViewModel.ViewAction.*
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class WorkoutFeedActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var workoutRepository: WorkoutRepository
+    private val workoutFeedViewModel: WorkoutFeedViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        workoutFeedViewModel.handleAction(LoadActivities)
 
+        val activities = workoutFeedViewModel.viewState.activities.value
         setContent {
             GuavaTheme {
-                LazyColumnFor(items = workoutRepository.getAllActivities()) {
-                    ActivityItem(
-                        it.owner,
-                        it.activityTime,
-                        it.title,
-                        it.distance,
-                        it.pace,
-                        it.totalLength
-                    )
-                }
+                WorkoutList(workoutList = activities!!)
             }
+        }
+    }
+
+
+    @Composable
+    private fun WorkoutList(workoutList: List<Activity>) {
+        LazyColumnFor(items = workoutList) { item ->
+            ActivityItem(
+                item.owner,
+                item.activityTime,
+                item.title,
+                item.distance,
+                item.pace,
+                item.totalLength
+            )
         }
     }
 

@@ -3,7 +3,7 @@ package com.example.guava.workout
 import javax.inject.Inject
 
 class FakeWorkoutRepository @Inject constructor(): WorkoutRepository {
-    override fun getAllActivities(): List<Activity> {
+    override suspend fun getAllActivities(): List<Activity> {
         return listOf(
             Activity(
                 owner = "Rachelle Holmgren",

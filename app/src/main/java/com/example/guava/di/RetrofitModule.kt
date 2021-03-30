@@ -3,6 +3,7 @@ package com.example.guava.di
 import com.example.guava.oauth.OAuthService
 import com.facebook.flipper.plugins.network.FlipperOkhttpInterceptor
 import com.facebook.flipper.plugins.network.NetworkFlipperPlugin
+import com.example.guava.workout.WorkoutService
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -49,5 +50,16 @@ class RetrofitModule {
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(OAuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStravaWorkoutService(okHttpClient: OkHttpClient): WorkoutService {
+        return Retrofit.Builder()
+            .baseUrl(OAuthService.BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+            .create(WorkoutService::class.java)
     }
 }

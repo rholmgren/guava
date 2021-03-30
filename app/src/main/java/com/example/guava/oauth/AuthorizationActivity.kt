@@ -1,5 +1,6 @@
 package com.example.guava.oauth
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,6 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
 import dagger.hilt.android.AndroidEntryPoint
+import net.openid.appauth.AuthorizationRequest
+import net.openid.appauth.AuthorizationService
+import net.openid.appauth.AuthorizationServiceConfiguration
 
 @AndroidEntryPoint
 class AuthorizationActivity : AppCompatActivity() {
@@ -27,21 +31,36 @@ class AuthorizationActivity : AppCompatActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(onClick = {
-                    val intentUri = Uri.parse(OAuthConfig.AUTHORIZE_URL)
-                        .buildUpon()
-                        .appendQueryParameter("client_id", OAuthConfig.CLIENT_ID)
-                        .appendQueryParameter("redirect_uri", OAuthConfig.REDIRECT_URI)
-                        .appendQueryParameter("response_type", OAuthConfig.RESPONSE_TYPE)
-                        .appendQueryParameter("approval_prompt", OAuthConfig.APPROVAL_PROMPT)
-                        .appendQueryParameter("scope", OAuthConfig.SCOPE)
-                        .build()
-
-                    val intent = Intent(Intent.ACTION_VIEW, intentUri)
-                    startActivity(intent)
+                    authorizeRequest()
                 }) {
                     Text("Authorize Strava")
                 }
             }
         }
+    }
+
+    private fun authorizeRequest() {
+        val serviceConfiguration = AuthorizationServiceConfiguration(
+            Uri.parse(OAuthConfig.AUTHORIZE_URL) /* auth endpoint */,
+            Uri.parse(OAuthConfig.TOKEN_URL) /* token endpoint */
+        )
+        val clientId = OAuthConfig.CLIENT_ID
+        val redirectUri = Uri.parse("https://guava-mobile.web.app")
+        val requestBuilder = AuthorizationRequest.Builder(
+            serviceConfiguration,
+            clientId,
+            AuthorizationRequest.RESPONSE_TYPE_CODE,
+            redirectUri
+        )
+
+        requestBuilder.setScope(OAuthConfig.SCOPE)
+        val request = requestBuilder.build()
+
+        val authorizationService = AuthorizationService(this)
+
+        val action = "com.example.guava.oauth.HANDLE_AUTHORIZATION_RESPONSE"
+        val postAuthorizationIntent = Intent(action)
+        val pendingIntent = PendingIntent.getActivity(this, request.hashCode(), postAuthorizationIntent, 0)
+        authorizationService.performAuthorizationRequest(request, pendingIntent)
     }
 }

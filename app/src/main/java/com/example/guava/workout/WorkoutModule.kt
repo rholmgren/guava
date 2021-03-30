@@ -9,5 +9,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class WorkoutFeedModule {
     @Binds
-    abstract fun bindWorkoutRepository(workoutRepositoryImpl: FakeWorkoutRepository): WorkoutRepository
+    abstract fun bindWorkoutRepository(workoutRepositoryImpl: RealWorkoutFeedRepository): WorkoutRepository
 }
